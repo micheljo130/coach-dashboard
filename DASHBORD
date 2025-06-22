@@ -14,6 +14,7 @@
         :root {
             --primary-color: #2c3f49; /* Bleu foncé pour le texte principal */
             --accent-color: #17ccb0; /* Turquoise pour les accents */
+            --accent-color-dark: #13b89c; /* Turquoise plus foncé pour le hover */
             --background-color: #e6eeef; /* Arrière-plan clair */
             --light-text-color: #697a80; /* Texte secondaire clair */
             --white: #fff;
@@ -49,6 +50,8 @@
 
         ul {
             list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
         b {
@@ -60,7 +63,7 @@
         .bodyContainer {
             margin: auto;
             max-width: 1940px; /* Adaptez à la taille maximale de votre site */
-            padding: 5.5rem 0 2rem; /* Espace pour le header fixe */
+            padding: 4.5rem 0 2rem; /* Espace pour le header fixe */
         }
 
         /* --- Composants réutilisables --- */
@@ -77,6 +80,8 @@
             color: var(--primary-color);
             background: var(--white);
             transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
 
         .button--highlight {
@@ -113,6 +118,10 @@
             font-size: 16px;
             color: var(--primary-color);
         }
+        
+        .field__input:focus {
+            outline: none;
+        }
 
         .field__button {
             display: flex;
@@ -124,7 +133,6 @@
             height: 50px;
             padding: 0;
             text-align: center;
-            /* Utilise le style du bouton--highlight */
             background: var(--accent-color);
             color: var(--white);
             border-radius: 3px;
@@ -135,10 +143,12 @@
             font-size: 14px;
             letter-spacing: .7px;
             transition: background 0.3s ease;
+            border: none;
         }
 
         .field__button:hover {
-            background: darken(var(--accent-color), 10%);
+            background: var(--accent-color-dark);
+            opacity: 1;
         }
 
         /* --- En-tête (Menu de navigation) --- */
@@ -149,20 +159,24 @@
             left: 0;
             width: 100%;
             height: 4.5rem;
-            padding: 1rem 0;
+            padding: 0 1rem;
             background: var(--background-color);
             box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Légère ombre pour le menu fixe */
+        }
+        
+        .menu.menu--open {
+            /* Styles pour le menu quand il est ouvert sur mobile, si besoin */
         }
 
         .menu__wrapper {
             display: flex;
-            flex-direction: column; /* Mobile first */
+            flex-direction: row; 
             margin: auto;
             max-width: 1920px;
-            padding: 0 10%; /* Espacement horizontal */
+            padding: 0 5%; 
             height: 100%;
             justify-content: space-between;
-            align-items: center; /* Centrer verticalement les éléments */
+            align-items: center; 
         }
 
         .menu__logoLink {
@@ -172,7 +186,8 @@
         }
 
         .menu__logo {
-            max-width: 100px; /* Taille du logo */
+            height: 30px; /* Taille du logo SVG */
+            width: auto;
             vertical-align: middle;
         }
 
@@ -187,6 +202,11 @@
             border: 0;
             width: auto;
         }
+        
+        .nav__list {
+            display: flex;
+            flex-direction: row;
+        }
 
         .nav__item {
             position: relative;
@@ -200,26 +220,29 @@
             padding: 1rem 0;
             font-family: 'f37bold', Tahoma, Verdana, sans-serif;
             text-transform: uppercase;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, color 0.3s ease;
         }
 
         .nav__link:hover {
             opacity: 1;
             color: var(--accent-color);
         }
+        
+        .menu__actions {
+             display: none; /* Caché sur mobile par défaut */
+        }
+
 
         /* Menu mobile (Icône burger) */
         .menu__mobile {
-            position: absolute;
-            top: 0;
-            right: 0;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 4.5rem; /* Taille du bouton burger */
             height: 4.5rem;
             cursor: pointer;
-            padding: 0 10%;
+            padding: 0;
         }
 
         .menu__burger {
@@ -244,14 +267,13 @@
         }
 
         .menu__burger::before {
-            top: 7px;
+            top: -7px; /* Ecartement des barres */
         }
 
         .menu__burger::after {
-            bottom: 7px;
+            bottom: -7px; /* Ecartement des barres */
         }
-
-        /* États ouverts du menu mobile (à gérer avec JS) */
+        
         .menu--open .menu__burger {
             background: transparent;
         }
@@ -264,7 +286,7 @@
             transform: translateY(-7px) rotate(-45deg);
         }
 
-        /* Menu de navigation mobile déroulant (à gérer avec JS) */
+        /* Menu de navigation mobile déroulant */
         .nav--mobile-open {
             display: flex;
             flex-direction: column;
@@ -277,10 +299,16 @@
             padding: 1rem 10%;
             overflow-y: auto;
             border-top: 1px solid #d5dfe3;
+            z-index: 3;
         }
-
+        
+        .nav--mobile-open .nav__list {
+            flex-direction: column;
+        }
+        
         .nav--mobile-open .nav__item {
             border-top: 1px solid #d5dfe3;
+            padding: 0;
         }
         .nav--mobile-open .nav__item:first-child {
             border-top: none;
@@ -288,6 +316,7 @@
         .nav--mobile-open .nav__link {
             padding: 1.5rem 0;
             text-align: center;
+            width: 100%;
         }
 
 
@@ -314,6 +343,11 @@
             margin-bottom: 2rem;
             color: var(--light-text-color);
         }
+        
+        .headerMain__cta .button {
+            margin: 0.5rem;
+        }
+
 
         /* --- Contenu principal du tableau de bord --- */
         .dashboard-content {
@@ -328,6 +362,19 @@
             border-radius: 8px;
             box-shadow: 0 5px 15px var(--shadow-medium);
             padding: 2rem;
+        }
+        
+        .dashboard-card ul li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--background-color);
+        }
+        
+        .dashboard-card ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .dashboard-card .button {
+            margin-top: 1rem;
         }
 
         .dashboard-card__title {
@@ -372,9 +419,9 @@
         }
 
         .footer__navLink {
-            margin: 0 1rem;
+            margin: 0.5rem 1rem;
             opacity: 0.8;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, color 0.3s ease;
         }
 
         .footer__navLink:hover {
@@ -383,71 +430,64 @@
         }
 
         /* --- Media Queries (Responsive) --- */
-        @media (min-width: 37.5em) { /* Environ 600px */
-            .bodyContainer {
-                padding-bottom: 1rem;
-            }
-            .menu__wrapper {
-                padding: 0 7.5%;
-            }
-            .menu__mobile {
-                padding: 0 7.5%;
-            }
-            .nav--mobile-open {
-                width: 50%; /* Le menu mobile prend la moitié de l'écran sur tablette */
-                right: 0;
-                left: auto;
-            }
-            .headerMain__title {
-                font-size: 38px;
-            }
-            .headerMain__subtitle {
-                font-size: 20px;
-            }
-            .dashboard-content {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 2 ou 3 colonnes sur tablette */
-            }
-        }
-
         @media (min-width: 56.25em) { /* Environ 900px */
             .bodyContainer {
-                padding: 110px 0 6rem; /* Plus d'espace pour le header sur grand écran */
+                padding-top: 6rem;
             }
+        
             .menu {
-                height: auto;
-                background: var(--background-color);
-                box-shadow: none; /* Pas d'ombre sur desktop si le design le permet */
+                padding: 0;
             }
-            .menu__wrapper {
-                flex-direction: row; /* Navigation horizontale sur desktop */
-                padding: 0 2.5%;
-            }
+
             .menu__mobile {
                 display: none; /* Masquer l'icône burger sur desktop */
             }
+            
+            .nav--mobile-open {
+                display: none; /* Le menu mobile ouvert ne doit pas exister sur desktop */
+            }
+
             .nav {
                 display: flex; /* Afficher la navigation sur desktop */
                 font-size: 14px;
             }
-            .headerMain {
-                padding: 4rem 5% 15vw; /* Plus grand header sur desktop */
+            
+            .menu__actions {
+                display: block; /* Afficher les boutons sur desktop */
             }
+
+            .headerMain {
+                padding: 4rem 5% 10vw;
+            }
+
             .headerMain__title {
                 font-size: 60px;
                 line-height: 1.1;
             }
+
             .headerMain__subtitle {
                 font-size: 24px;
             }
+            
             .dashboard-content {
-                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Plus de colonnes sur desktop */
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             }
+            
             .footer {
                 padding: 3rem 5%;
                 text-align: left;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
+
             .footer__nav {
                 justify-content: flex-start;
+                margin-bottom: 0;
+            }
+            
+            .footer p {
+                margin-left: 2rem;
             }
         }
     </style>
@@ -457,10 +497,17 @@
         Pour une expérience optimale, veuillez activer JavaScript dans votre navigateur.
     </noscript>
 
-    <header class="menu">
+    <header class="menu" id="main-menu">
         <div class="menu__wrapper">
             <a href="/" class="menu__logoLink">
-                <img src="votre_logo.png" alt="Coach Autodidacte Logo" class="menu__logo">
+                <svg class="menu__logo" role="img" viewBox="0 0 150 40" xmlns="http://www.w3.org/2000/svg">
+                    <title>Coach Autodidacte Logo</title>
+                    <style>
+                        .logo-text { font-family: 'f37bold', Tahoma, Verdana, sans-serif; font-size: 24px; fill: #2c3f49; }
+                        .logo-highlight { fill: #17ccb0; }
+                    </style>
+                    <text x="0" y="28" class="logo-text">Coach<tspan class="logo-highlight">.</tspan>A</text>
+                </svg>
             </a>
 
             <nav class="nav" id="main-nav">
@@ -470,8 +517,6 @@
                     <li class="nav__item"><a href="#cours" class="nav__link">Mes Cours</a></li>
                     <li class="nav__item"><a href="#progres" class="nav__link">Mon Progrès</a></li>
                     <li class="nav__item"><a href="#ressources" class="nav__link">Ressources</a></li>
-                    <li class="nav__item"><a href="#communauté" class="nav__link">Communauté</a></li>
-                    <li class="nav__item"><a href="#profil" class="nav__link">Mon Profil</a></li>
                 </ul>
             </nav>
 
@@ -489,56 +534,41 @@
     <div class="bodyContainer">
         <main>
             <section class="headerMain">
-                <h1 class="headerMain__title">Bienvenue, Coach Autodidacte !</h1>
-                <p class="headerMain__subtitle">Atteignez vos sommets. Chaque jour. À votre rythme.</p>
+                <h1 class="headerMain__title">Bienvenue, Coach !</h1>
+                <p class="headerMain__subtitle" id="welcome-subtitle">Atteignez vos sommets. Chaque jour. À votre rythme.</p>
                 <div class="headerMain__cta">
-                    <a href="#nouveau-objectif" class="button button--medium button--highlight">Ajouter un nouvel objectif</a>
+                    <a href="#nouveau-objectif" class="button button--medium button--highlight">Ajouter un objectif</a>
                     <a href="#explorer-cours" class="button button--medium">Explorer les cours</a>
                 </div>
             </section>
 
-            <section class="dashboard-content">
-                <div class="dashboard-card">
+            <section class="dashboard-content" id="dashboard">
+                <div class="dashboard-card" id="objectifs">
                     <h2 class="dashboard-card__title">Objectifs Actuels</h2>
-                    <ul>
-                        <li><b>Développer une application mobile :</b> 60% complété</li>
-                        <div class="progress-bar"><div class="progress-bar__fill" style="width: 60%;"></div></div>
-                        <li><b>Maîtriser Python pour la science des données :</b> 30% complété</li>
-                        <div class="progress-bar"><div class="progress-bar__fill" style="width: 30%;"></div></div>
-                        <li><b>Écrire un article de blog par semaine :</b> 80% complété</li>
-                        <div class="progress-bar"><div class="progress-bar__fill" style="width: 80%;"></div></div>
-                    </ul>
+                    <ul id="objectifs-list">
+                        </ul>
                     <a href="#voir-tous-objectifs" class="button button--small">Voir tous les objectifs</a>
                 </div>
 
-                <div class="dashboard-card">
+                <div class="dashboard-card" id="progres">
                     <h2 class="dashboard-card__title">Progrès Récent</h2>
-                    <p><strong>Hier :</strong> Terminé le module 3 de "Développement Web Fullstack".</p>
-                    <p><strong>Cette semaine :</strong> 5 heures de code, 2 chapitres lus sur la psychologie de l'apprentissage.</p>
+                    <div id="recent-progress-content">
+                        </div>
                     <a href="#rapport-detaille" class="button button--small">Voir le rapport détaillé</a>
                 </div>
 
-                <div class="dashboard-card">
+                <div class="dashboard-card" id="taches">
                     <h2 class="dashboard-card__title">Prochaines Tâches</h2>
-                    <ul>
-                        <li>Revoir les concepts de POO en Python (Demain)</li>
-                        <li>Commencer le projet "Liste de Tâches" pour l'app mobile (Lundi)</li>
-                        <li>Lire l'article sur la "mémoire spatiale" (Ce week-end)</li>
-                    </ul>
+                    <ul id="tasks-list">
+                        </ul>
                     <a href="#gerer-taches" class="button button--small">Gérer mes tâches</a>
                 </div>
-
+                
                 <div class="dashboard-card">
-                    <h2 class="dashboard-card__title">Défi du Jour</h2>
-                    <p>Implémenter une fonction de tri avancée en JavaScript.</p>
-                    <a href="#commencer-defi" class="button button--small button--highlight">Relever le défi</a>
-                </div>
-
-                <div class="dashboard-card">
-                    <h2 class="dashboard-card__title">Ajouter un rappel</h2>
+                    <h2 class="dashboard-card__title">Ajouter une Tâche</h2>
                     <div class="field">
-                        <input type="text" placeholder="Ex: Réviser l'algèbre linéaire" class="field__input">
-                        <button type="button" class="field__button">Ajouter</button>
+                        <input type="text" id="new-task-input" placeholder="Ex: Réviser l'algèbre linéaire" class="field__input">
+                        <button type="button" id="add-task-button" class="field__button">Ajouter</button>
                     </div>
                 </div>
 
@@ -559,24 +589,117 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- GESTION DU MENU MOBILE ---
             const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mainMenu = document.getElementById('main-menu');
             const mainNav = document.getElementById('main-nav');
-            const body = document.body;
 
-            if (mobileMenuToggle && mainNav) {
+            if (mobileMenuToggle && mainNav && mainMenu) {
                 mobileMenuToggle.addEventListener('click', function() {
                     mainNav.classList.toggle('nav--mobile-open');
-                    body.classList.toggle('menu--open'); // Ajoute une classe pour gérer les effets visuels sur le body
+                    mainMenu.classList.toggle('menu--open'); 
                 });
 
-                // Fermer le menu si un lien est cliqué (pour mobile)
                 mainNav.querySelectorAll('.nav__link').forEach(link => {
                     link.addEventListener('click', () => {
                         mainNav.classList.remove('nav--mobile-open');
-                        body.classList.remove('menu--open');
+                        mainMenu.classList.remove('menu--open');
                     });
                 });
             }
+
+            // --- DONNÉES DYNAMIQUES (Simulation d'une base de données) ---
+            let objectifs = [
+                { title: "Développer une application mobile", progress: 60 },
+                { title: "Maîtriser Python pour la science des données", progress: 30 },
+                { title: "Écrire un article de blog par semaine", progress: 80 }
+            ];
+
+            let taches = [
+                "Revoir les concepts de POO en Python (Demain)",
+                "Commencer le projet 'Liste de Tâches' (Lundi)",
+                "Lire l'article sur la 'mémoire spatiale' (Ce week-end)"
+            ];
+            
+            let progresRecents = `
+                <p><strong>Hier :</strong> Terminé le module 3 de "Développement Web Fullstack".</p>
+                <p><strong>Cette semaine :</strong> 5 heures de code, 2 chapitres lus sur la psychologie de l'apprentissage.</p>
+            `;
+
+            // --- SÉLECTEURS D'ÉLÉMENTS ---
+            const objectifsList = document.getElementById('objectifs-list');
+            const tasksList = document.getElementById('tasks-list');
+            const recentProgressContent = document.getElementById('recent-progress-content');
+            const newTaskInput = document.getElementById('new-task-input');
+            const addTaskButton = document.getElementById('add-task-button');
+
+
+            // --- FONCTIONS POUR AFFICHER LES DONNÉES ---
+            function afficherObjectifs() {
+                if (!objectifsList) return;
+                objectifsList.innerHTML = ''; // Vider la liste
+                objectifs.forEach(obj => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <b>${obj.title}:</b> ${obj.progress}% complété
+                        <div class="progress-bar">
+                            <div class="progress-bar__fill" style="width: ${obj.progress}%;"></div>
+                        </div>
+                    `;
+                    objectifsList.appendChild(listItem);
+                });
+            }
+
+            function afficherTaches() {
+                if (!tasksList) return;
+                tasksList.innerHTML = ''; // Vider la liste
+                taches.forEach(task => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = task;
+                    tasksList.appendChild(listItem);
+                });
+            }
+            
+            function afficherProgres() {
+                if (!recentProgressContent) return;
+                recentProgressContent.innerHTML = progresRecents;
+            }
+
+
+            // --- GESTION DES ÉVÉNEMENTS ---
+            function ajouterTache() {
+                const taskText = newTaskInput.value.trim();
+                if (taskText === "") {
+                    alert("Veuillez entrer une description pour la tâche.");
+                    return;
+                }
+                
+                taches.push(taskText);
+                afficherTaches();
+                newTaskInput.value = '';
+                newTaskInput.focus();
+            }
+
+            if(addTaskButton && newTaskInput) {
+                addTaskButton.addEventListener('click', ajouterTache);
+
+                newTaskInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        ajouterTache();
+                    }
+                });
+            }
+
+            // --- INITIALISATION DU TABLEAU DE BORD ---
+            function initialiserDashboard() {
+                afficherObjectifs();
+                afficherTaches();
+                afficherProgres();
+            }
+            
+            initialiserDashboard();
+
         });
     </script>
 </body>
